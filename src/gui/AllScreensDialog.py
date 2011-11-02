@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'allscreensdialog.ui'
 #
-# Created: Wed Nov  2 19:13:26 2011
+# Created: Wed Nov  2 20:09:51 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,6 +40,8 @@ class Ui_Dialog(object):
         self.screenshotsList.setSizePolicy(sizePolicy)
         self.screenshotsList.setMinimumSize(QtCore.QSize(150, 0))
         self.screenshotsList.setMaximumSize(QtCore.QSize(150, 16777215))
+        self.screenshotsList.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.screenshotsList.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.screenshotsList.setObjectName(_fromUtf8("screenshotsList"))
         self.verticalLayout_3.addWidget(self.screenshotsList)
         self.copyToDesktop = QtGui.QPushButton(Dialog)

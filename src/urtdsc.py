@@ -5,7 +5,7 @@ import os, sys
 #from PyQt4 import Qt
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from gui import MainWindow, AllScreensDialog
+from gui import MainWindow, AllScreensDialog, AboutWindow
 import glob, time, config, lib
 
 class urtdscMain(QMainWindow):
@@ -49,6 +49,7 @@ class urtdscMain(QMainWindow):
         self.ui.demosList.itemClicked.connect(self.showDemoInfo)
         self.ui.copyDemoToDesktop.clicked.connect(self.copydemos)
         self.ui.viewAllScreenshots.clicked.connect(self.allScreenshotsDialog)
+        self.ui.action_About_urtdsc.triggered.connect(self.aboutWindow)
         self.ui.actionAbout_Qt.triggered.connect(self.aboutQt)
 
     def showDemoInfo(self):
@@ -84,6 +85,15 @@ class urtdscMain(QMainWindow):
     def allScreenshotsDialog(self):
         als = allScreens(self)
         als.show()
+
+    def aboutWindow(self):
+        aboutw = QDialog()
+        aboutw.ui = AboutWindow.Ui_Dialog()
+        aboutw.ui.setupUi(aboutw)
+
+        aboutw.ui.textBrowser.setBackgroundRole(QPalette.AlternateBase)
+
+        aboutw.exec_()
 
     def aboutQt(self):
         QMessageBox.aboutQt(self)
