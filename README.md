@@ -12,3 +12,6 @@ Currently there is no way to install this app. Just get fresh source code and la
 Dependencies:
   * Python 2.6 - 2.7.2
   * PyQt4
+
+## Bug reporting, suggesting, etc.
+All bugreports and suggestions must go to [my Redmine](http://dev.pztrn.ru/projects/urtdsc/).
