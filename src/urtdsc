@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Launch urtdsc using this file!
+python ./urtdsc.py
