@@ -10,5 +10,5 @@ Currently there is no way to install this app. Just get fresh source code and la
     $ git clone git://github.com/pztrn/urtdsc
 
 Dependencies:
-  * Python 2
+  * Python 2.6 - 2.7.2
   * PyQt4
