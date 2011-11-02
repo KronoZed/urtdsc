@@ -6,7 +6,7 @@ import os, sys
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from gui import MainWindow, AllScreensDialog, AboutWindow
-import glob, time, config, lib
+import glob, time, config, lib, commands
 
 class urtdscMain(QMainWindow):
     def __init__(self, parent=None):
@@ -19,11 +19,27 @@ class urtdscMain(QMainWindow):
         self.restoreGeometry(self.settings.value('geometry').toByteArray())
         self.restoreState(self.settings.value('state').toByteArray())
 
+        self.revision = commands.getoutput('git rev-parse --short HEAD')
+
         if os.path.exists(os.path.expanduser('~/.q3a/q3ut4/demos')):
             pass
         else:
             nodemos = '1'
 
+        self.fillDemosList(1)
+
+        self.ui.label.setText("")
+
+        QMetaObject.connectSlotsByName(self)
+        self.ui.demosList.itemClicked.connect(self.showDemoInfo)
+        self.ui.copyDemoToDesktop.clicked.connect(self.copydemos)
+        self.ui.viewAllScreenshots.clicked.connect(self.allScreenshotsDialog)
+        self.ui.action_Update_list.triggered.connect(self.fillDemosList)
+        self.ui.action_About_urtdsc.triggered.connect(self.aboutWindow)
+        self.ui.actionAbout_Qt.triggered.connect(self.aboutQt)
+
+    def fillDemosList(self, type):
+        self.ui.demosList.clear()
         try:
             path = os.path.expanduser('~/.q3a/q3ut4/demos')
             self.date_file_list = []
@@ -38,19 +54,13 @@ class urtdscMain(QMainWindow):
                 file_date = time.strftime('%d-%m-%Y @ %H:%M', file[0])
                 self.ui.demosList.addItem(file_date)
                 nodemos = '0'
+            if type == 1:
+                self.ui.statusbar.showMessage("Demo list loaded. Total: " + str(self.ui.demosList.count()) + " demos.")
+            else:
+                self.ui.statusbar.showMessage("Demo list reloaded. Total: " + str(self.ui.demosList.count()) + " demos.")
         except:
-            #self.nodemosfound()
+            self.nodemosfound()
             nodemos = '1'
-
-        self.ui.label.setText("")
-        self.ui.screen.setText("")
-
-        QMetaObject.connectSlotsByName(self)
-        self.ui.demosList.itemClicked.connect(self.showDemoInfo)
-        self.ui.copyDemoToDesktop.clicked.connect(self.copydemos)
-        self.ui.viewAllScreenshots.clicked.connect(self.allScreenshotsDialog)
-        self.ui.action_About_urtdsc.triggered.connect(self.aboutWindow)
-        self.ui.actionAbout_Qt.triggered.connect(self.aboutQt)
 
     def showDemoInfo(self):
         maplist = []
@@ -78,6 +88,7 @@ class urtdscMain(QMainWindow):
 
         self.ui.label.setText("<b>Demoname:</b> " + demoname + "<br><b>Nickname:</b> " + nickname + "<br><b>Maps:</b> " + maps)
         self.ui.screen.setPixmap(screenshot)
+        self.ui.statusbar.showMessage("Demo " + demoname + " have " + str(len(self.screens)) + " screenshots.")
 
     def copydemos(self, event):
         lib.copyfile(os.path.expanduser("~/" + config.URT_FOLDER + "/q3ut4/demos/") + lib.demoname(demotime))
@@ -86,10 +97,17 @@ class urtdscMain(QMainWindow):
         als = allScreens(self)
         als.show()
 
+    def nodemosfound(self):
+        QMessageBox.critical(self, "UrTDSC - FAIL!", "No demos found.")
+
+    def nosshotsfound(self):
+        QMessageBox.critical(self, "UrTDSC - FAIL!", "No screenshots found.")
+
     def aboutWindow(self):
         aboutw = QDialog()
         aboutw.ui = AboutWindow.Ui_Dialog()
         aboutw.ui.setupUi(aboutw)
+        aboutw.ui.label_2.setText((QApplication.translate("Dialog",'<p><span style=" font-size:11pt; font-weight:600;">Version 0.3-dev-' + self.revision +'</span></p></body></html>', None, QApplication.UnicodeUTF8)))
 
         aboutw.ui.textBrowser.setBackgroundRole(QPalette.AlternateBase)
 
@@ -100,8 +118,11 @@ class urtdscMain(QMainWindow):
 
     def resizeEvent(self, event):
         size = event.size()
-        screenimg = QPixmap().fromImage(self.screenimg).scaled(self.ui.screen.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.ui.screen.setPixmap(screenimg)
+        try:
+            screenimg = QPixmap().fromImage(self.screenimg).scaled(self.ui.screen.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.ui.screen.setPixmap(screenimg)
+        except:
+            self.ui.screen.setText("<big><b>Select demo from the left list</b></big>")
 
     def closeEvent(self, QCloseEvent):
         self.settings.setValue('state', self.saveState())
@@ -114,7 +135,6 @@ class allScreens(QDialog):
         self.ui.setupUi(self)
 
         maplist = []
-
         self.ui.label.setText("")
         self.ui.screenshotsList.setIconSize(QSize(140, 140))
 
@@ -127,7 +147,7 @@ class allScreens(QDialog):
                 itemForList = QListWidgetItem(screenshotForList, QString.fromUtf8(''), self.ui.screenshotsList)
                 self.ui.screenshotsList.addItem(itemForList)
         except:
-            self.ui.label.setText("<big><span style='color:red;font-weight:bold;'>You must select demo first!</span></big>")
+            pass
 
         QMetaObject.connectSlotsByName(self)
         self.ui.screenshotsList.clicked.connect(self.showScreen)
@@ -141,8 +161,14 @@ class allScreens(QDialog):
 
     def resizeEvent(self, event):
         size = event.size()
-        screenimg = QPixmap().fromImage(self.screenimg).scaled(self.ui.label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        self.ui.label.setPixmap(screenimg)
+        try:
+            screenimg = QPixmap().fromImage(self.screenimg).scaled(self.ui.label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.ui.label.setPixmap(screenimg)
+        except:
+            if self.ui.screenshotsList.count() > 0:
+                self.ui.label.setText("<big><b>Select screenshot</b></big>")
+            else:
+                self.ui.label.setText("<big><span style='color:red;font-weight:bold;'>You must select demo first!</span></big>")
 
     def copyToDesktop(self, event):
         for screen in self.scrlist:

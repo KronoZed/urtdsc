@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Wed Nov  2 19:17:56 2011
+# Created: Wed Nov  2 20:47:26 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -57,6 +57,7 @@ class Ui_MainWindow(object):
         self.screen.setSizePolicy(sizePolicy)
         self.screen.setTextFormat(QtCore.Qt.AutoText)
         self.screen.setScaledContents(True)
+        self.screen.setAlignment(QtCore.Qt.AlignCenter)
         self.screen.setObjectName(_fromUtf8("screen"))
         self.verticalLayout_2.addWidget(self.screen)
         self.horizontalLayout.addLayout(self.verticalLayout_2)
