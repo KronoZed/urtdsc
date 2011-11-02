@@ -5,7 +5,7 @@ import os, sys
 #from PyQt4 import Qt
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from gui import MainWindow
+from gui import MainWindow, AllScreensDialog
 import glob, time, config, lib
 
 class urtdscMain(QMainWindow):
@@ -13,6 +13,11 @@ class urtdscMain(QMainWindow):
         QWidget.__init__(self, parent)
         self.ui = MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Settings
+        self.settings = QSettings('urtdsc', 'settings')
+        self.restoreGeometry(self.settings.value('geometry').toByteArray())
+        self.restoreState(self.settings.value('state').toByteArray())
 
         if os.path.exists(os.path.expanduser('~/.q3a/q3ut4/demos')):
             pass
@@ -40,20 +45,24 @@ class urtdscMain(QMainWindow):
         self.ui.label.setText("")
         self.ui.screen.setText("")
 
-        self.ui.demosList.itemClicked.connect(self.showDemoInfo)
         QMetaObject.connectSlotsByName(self)
+        self.ui.demosList.itemClicked.connect(self.showDemoInfo)
+        self.ui.copyDemoToDesktop.clicked.connect(self.copydemos)
+        self.ui.viewAllScreenshots.clicked.connect(self.allScreenshotsDialog)
+        self.ui.actionAbout_Qt.triggered.connect(self.aboutQt)
 
     def showDemoInfo(self):
         maplist = []
+        global demotime
         demotime = self.ui.demosList.currentItem().text()
         demoname = lib.demoname(demotime)
         nickname = lib.demonick(demoname)
-        screens = lib.demoscreens(lib.demoname(demotime))
+        self.screens = lib.demoscreens(lib.demoname(demotime))
         try:
-            screenaddr = screens[0]
+            screenaddr = self.screens[0]
             self.screenimg = QImage(screenaddr)
             screenshot = QPixmap().fromImage(self.screenimg).scaled(self.ui.screen.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
-            for scr in screens:
+            for scr in self.screens:
                 scrs = scr.split("_")
                 if scrs[1] in ('TOHUNGA', 'ORBITAL'):
                     maplist.append(scrs[1] + "_" + scrs[2])
@@ -69,13 +78,67 @@ class urtdscMain(QMainWindow):
         self.ui.label.setText("<b>Demoname:</b> " + demoname + "<br><b>Nickname:</b> " + nickname + "<br><b>Maps:</b> " + maps)
         self.ui.screen.setPixmap(screenshot)
 
+    def copydemos(self, event):
+        lib.copyfile(os.path.expanduser("~/" + config.URT_FOLDER + "/q3ut4/demos/") + lib.demoname(demotime))
+
+    def allScreenshotsDialog(self):
+        als = allScreens(self)
+        als.show()
+
+    def aboutQt(self):
+        QMessageBox.aboutQt(self)
+
     def resizeEvent(self, event):
         size = event.size()
         screenimg = QPixmap().fromImage(self.screenimg).scaled(self.ui.screen.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.ui.screen.setPixmap(screenimg)
 
-if __name__ == "__main__":
+    def closeEvent(self, QCloseEvent):
+        self.settings.setValue('state', self.saveState())
+        self.settings.setValue('geometry', self.saveGeometry())
 
+class allScreens(QDialog):
+    def __init__(self, parent):
+        QWidget.__init__(self, parent)
+        self.ui = AllScreensDialog.Ui_Dialog()
+        self.ui.setupUi(self)
+
+        maplist = []
+
+        self.ui.label.setText("")
+        self.ui.screenshotsList.setIconSize(QSize(140, 140))
+
+        try:
+            self.scrlist = lib.demoscreens(lib.demoname(demotime))
+
+            for screen in self.scrlist:
+                screenimg = QImage(screen)
+                screenshotForList = QIcon(QPixmap.fromImage(screenimg).scaled(QSize(140, 140), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+                itemForList = QListWidgetItem(screenshotForList, QString.fromUtf8(''), self.ui.screenshotsList)
+                self.ui.screenshotsList.addItem(itemForList)
+        except:
+            self.ui.label.setText("<big><span style='color:red;font-weight:bold;'>You must select demo first!</span></big>")
+
+        QMetaObject.connectSlotsByName(self)
+        self.ui.screenshotsList.clicked.connect(self.showScreen)
+        self.ui.copyToDesktop.clicked.connect(self.copyToDesktop)
+        
+    def showScreen(self):
+        screenidx = self.ui.screenshotsList.currentRow()
+        self.screenimg = QImage(self.scrlist[screenidx])
+        screenshot = QPixmap().fromImage(self.screenimg).scaled(self.ui.label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.ui.label.setPixmap(screenshot)
+
+    def resizeEvent(self, event):
+        size = event.size()
+        screenimg = QPixmap().fromImage(self.screenimg).scaled(self.ui.label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.ui.label.setPixmap(screenimg)
+
+    def copyToDesktop(self, event):
+        for screen in self.scrlist:
+            lib.copyfile(screen)
+
+if __name__ == "__main__":
     try:
         if config.DEBUG:
             DEBUG = config.DEBUG

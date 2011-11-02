@@ -110,6 +110,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="copyDemoToDesktop">
+          <property name="text">
+           <string>Copy demo to Desktop</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="viewAllScreenshots">
           <property name="text">
            <string>View all screenshots</string>

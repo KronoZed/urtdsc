@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Wed Nov  2 18:02:19 2011
+# Created: Wed Nov  2 19:17:56 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -66,6 +66,9 @@ class Ui_MainWindow(object):
         self.createArchive = QtGui.QPushButton(self.centralwidget)
         self.createArchive.setObjectName(_fromUtf8("createArchive"))
         self.horizontalLayout_2.addWidget(self.createArchive)
+        self.copyDemoToDesktop = QtGui.QPushButton(self.centralwidget)
+        self.copyDemoToDesktop.setObjectName(_fromUtf8("copyDemoToDesktop"))
+        self.horizontalLayout_2.addWidget(self.copyDemoToDesktop)
         self.viewAllScreenshots = QtGui.QPushButton(self.centralwidget)
         self.viewAllScreenshots.setObjectName(_fromUtf8("viewAllScreenshots"))
         self.horizontalLayout_2.addWidget(self.viewAllScreenshots)
@@ -113,6 +116,7 @@ class Ui_MainWindow(object):
         self.label.setText(QtGui.QApplication.translate("MainWindow", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.screen.setText(QtGui.QApplication.translate("MainWindow", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.createArchive.setText(QtGui.QApplication.translate("MainWindow", "Create Archive...", None, QtGui.QApplication.UnicodeUTF8))
+        self.copyDemoToDesktop.setText(QtGui.QApplication.translate("MainWindow", "Copy demo to Desktop", None, QtGui.QApplication.UnicodeUTF8))
         self.viewAllScreenshots.setText(QtGui.QApplication.translate("MainWindow", "View all screenshots", None, QtGui.QApplication.UnicodeUTF8))
         self.menu_File.setTitle(QtGui.QApplication.translate("MainWindow", "&File", None, QtGui.QApplication.UnicodeUTF8))
         self.menu_Demos.setTitle(QtGui.QApplication.translate("MainWindow", "&Demos", None, QtGui.QApplication.UnicodeUTF8))
