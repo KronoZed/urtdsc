@@ -8,3 +8,7 @@ UrTDSC distributed under Terms and Conditions of GNU GPL v2 or any higher versio
 Currently there is no way to install this app. Just get fresh source code and launch urtdsc! Like this:
 
     $ git clone git://github.com/pztrn/urtdsc
+
+Dependencies:
+  * Python 2
+  * PyQt4
