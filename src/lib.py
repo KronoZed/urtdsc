@@ -1,8 +1,7 @@
 import os, time, config, datetime, shutil
-
-#Variables
 from PyQt4.QtCore import qDebug
 
+#Variables
 path = os.path.expanduser('~/' + config.URT_FOLDER + '/q3ut4/demos/')
 spath = os.path.expanduser('~/' + config.URT_FOLDER + '/q3ut4/screenshots/')
 try:

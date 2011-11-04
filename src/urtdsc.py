@@ -126,9 +126,6 @@ class urtdscMain(QMainWindow):
         aboutw.ui = AboutWindow.Ui_Dialog()
         aboutw.ui.setupUi(aboutw)
         aboutw.ui.label_2.setText((QApplication.translate("Dialog",'<p><span style=" font-size:11pt; font-weight:600;">Version 0.3-dev-' + self.revision +'</span></p></body></html>', None, QApplication.UnicodeUTF8)))
-
-        aboutw.ui.textBrowser.setBackgroundRole(QPalette.AlternateBase)
-
         aboutw.exec_()
 
     def aboutQt(self):
