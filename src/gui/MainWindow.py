@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainwindow.ui'
 #
-# Created: Wed Nov  2 20:47:26 2011
+# Created: Fri Nov  4 15:16:53 2011
 #      by: PyQt4 UI code generator 4.8.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -31,6 +31,7 @@ class Ui_MainWindow(object):
         self.demosList = QtGui.QListWidget(self.centralwidget)
         self.demosList.setMinimumSize(QtCore.QSize(200, 0))
         self.demosList.setMaximumSize(QtCore.QSize(200, 16777215))
+        self.demosList.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.demosList.setFrameShape(QtGui.QFrame.StyledPanel)
         self.demosList.setFrameShadow(QtGui.QFrame.Plain)
         self.demosList.setEditTriggers(QtGui.QAbstractItemView.NoEditTriggers)

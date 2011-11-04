@@ -32,6 +32,7 @@ class urtdscMain(QMainWindow):
 
         QMetaObject.connectSlotsByName(self)
         self.ui.demosList.itemClicked.connect(self.showDemoInfo)
+        self.ui.demosList.customContextMenuRequested.connect(self.demoContextMenu)
         self.ui.copyDemoToDesktop.clicked.connect(self.copydemos)
         self.ui.viewAllScreenshots.clicked.connect(self.allScreenshotsDialog)
         self.ui.action_Update_list.triggered.connect(self.fillDemosList)
@@ -88,10 +89,15 @@ class urtdscMain(QMainWindow):
 
         self.ui.label.setText("<b>Demoname:</b> " + demoname + "<br><b>Nickname:</b> " + nickname + "<br><b>Maps:</b> " + maps)
         self.ui.screen.setPixmap(screenshot)
-        self.ui.statusbar.showMessage("Demo " + demoname + " have " + str(len(self.screens)) + " screenshots.")
+        self.ui.statusbar.showMessage("Demo " + demoname + " have " + str(len(self.screens)) + " screenshot(s).")
 
-    def copydemos(self, event):
+    def copydemos(self):
         lib.copyfile(os.path.expanduser("~/" + config.URT_FOLDER + "/q3ut4/demos/") + lib.demoname(demotime))
+
+    def copyallstuff(self):
+        lib.copyfile(os.path.expanduser("~/" + config.URT_FOLDER + "/q3ut4/demos/") + lib.demoname(demotime))
+        for screen in self.screens:
+            lib.copyfile(screen)
 
     def allScreenshotsDialog(self):
         als = allScreens(self)
@@ -102,6 +108,13 @@ class urtdscMain(QMainWindow):
 
     def nosshotsfound(self):
         QMessageBox.critical(self, "UrTDSC - FAIL!", "No screenshots found.")
+
+    def demoContextMenu(self, pos):
+        demomenu = QMenu("Demos menu")
+        demomenu.addAction("Copy all stuff to desktop", self.copyallstuff)
+        demomenu.addSeparator()
+        demomenu.addAction("Remove demo")
+        demomenu.exec_(self.ui.demosList.mapToGlobal(pos))
 
     def aboutWindow(self):
         aboutw = QDialog()
