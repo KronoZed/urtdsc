@@ -141,7 +141,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="urtdsc.py" line="44"/>
         <source>Copy demo to desktop</source>
-        <translation>Скопировать демки на рабочий стол</translation>
+        <translation>Скопировать демку на рабочий стол</translation>
     </message>
     <message>
         <location filename="urtdsc.py" line="45"/>
@@ -257,6 +257,11 @@ p, li { white-space: pre-wrap; }
         <location filename="urtdsc.py" line="166"/>
         <source>Select demo from the left list</source>
         <translation>Выберите демку из списка слева</translation>
+    </message>
+    <message>
+        <location filename="urtdsc.py" line="87"/>
+        <source>demos</source>
+        <translation>демок</translation>
     </message>
 </context>
 </TS>

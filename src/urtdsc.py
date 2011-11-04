@@ -82,9 +82,9 @@ class urtdscMain(QMainWindow):
                 self.ui.demosList.addItem(file_date)
                 nodemos = '0'
             if type == 1:
-                self.ui.statusbar.showMessage(self.tr("Demo list loaded. Total: ") + str(self.ui.demosList.count()) + " demos.")
+                self.ui.statusbar.showMessage(self.tr("Demo list loaded. Total: ") + str(self.ui.demosList.count()) + " " + self.tr("demos") + ".")
             else:
-                self.ui.statusbar.showMessage(self.tr("Demo list reloaded. Total: ") + str(self.ui.demosList.count()) + " demos.")
+                self.ui.statusbar.showMessage(self.tr("Demo list reloaded. Total: ") + str(self.ui.demosList.count()) + " " + self.tr("demos") + ".")
         except:
             self.nodemosfound()
             nodemos = '1'
