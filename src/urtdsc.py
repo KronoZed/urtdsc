@@ -99,6 +99,11 @@ class urtdscMain(QMainWindow):
         for screen in self.screens:
             lib.copyfile(screen)
 
+    def removeallstuff(self):
+        lib.removefile(os.path.expanduser("~/" + config.URT_FOLDER + "/q3ut4/demos/") + lib.demoname(demotime))
+        for screen in self.screens:
+            lib.removefile(screen)
+
     def allScreenshotsDialog(self):
         als = allScreens(self)
         als.show()
@@ -113,7 +118,7 @@ class urtdscMain(QMainWindow):
         demomenu = QMenu("Demos menu")
         demomenu.addAction("Copy all stuff to desktop", self.copyallstuff)
         demomenu.addSeparator()
-        demomenu.addAction("Remove demo")
+        demomenu.addAction("Remove demo and related stuff from disk", self.removeallstuff)
         demomenu.exec_(self.ui.demosList.mapToGlobal(pos))
 
     def aboutWindow(self):

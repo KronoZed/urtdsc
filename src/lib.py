@@ -1,6 +1,8 @@
 import os, time, config, datetime, shutil
 
 #Variables
+from PyQt4.QtCore import qDebug
+
 path = os.path.expanduser('~/' + config.URT_FOLDER + '/q3ut4/demos/')
 spath = os.path.expanduser('~/' + config.URT_FOLDER + '/q3ut4/screenshots/')
 try:
@@ -10,9 +12,9 @@ except:
 
 def log(level, text, *args, **kwargs):
     if level in ('1', '2') and config.DEBUG in '2':
-        print "[D2]:", text
+        qDebug("[D2]: " + text)
     elif level in '1' and config.DEBUG in '1':
-        print "[D1]:", text
+        qDebug("[D1]: " + text)
     else:
         pass
 
@@ -85,3 +87,10 @@ def copyfile(filename):
         shutil.copy(filename, os.path.expanduser("~/Desktop"))
     except:
         log('1', 'Failed to copy %s' % filename)
+
+def removefile(filename):
+    try:
+        log('1', 'Removing file: %s' % filename)
+        os.remove(filename)
+    except:
+        log('1', 'Failed to remove %s' % filename)
