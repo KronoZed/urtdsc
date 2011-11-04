@@ -14,6 +14,16 @@ class urtdscMain(QMainWindow):
         self.ui = MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # Translations
+        try:
+            dirr = os.getcwd() + "/translations/"
+            translator = QTranslator(app)
+            translator.load("urtdsc-" + QLocale.system().name() + ".qm", dirr)
+            app.installTranslator(translator)
+            lib.log('1', "Loaded translation for: " + QLocale.system().name() + " from " + dirr)
+        except:
+            lib.log('1', "Cant load translations!")
+
         # Settings
         self.settings = QSettings('urtdsc', 'settings')
         self.restoreGeometry(self.settings.value('geometry').toByteArray())
@@ -30,14 +40,30 @@ class urtdscMain(QMainWindow):
 
         self.ui.label.setText("")
 
+        # We need this for translations >.<
+        self.ui.copyDemoToDesktop.setText(self.tr("Copy demo to desktop"))
+        self.ui.viewAllScreenshots.setText(self.tr("View all screenshots"))
+        self.ui.createArchive.setText(self.tr("Create archive..."))
+        self.ui.menu_File.setTitle(self.tr("&File"))
+        self.ui.action_Options.setText(self.tr("&Options"))
+        self.ui.action_Exit.setText(self.tr("&Exit"))
+        self.ui.menu_Demos.setTitle(self.tr("&Demos"))
+        self.ui.action_Update_list.setText(self.tr("&Update list"))
+        self.ui.menu_Help.setTitle(self.tr("&Help"))
+        self.ui.action_About_urtdsc.setText(self.tr("About &UrTDSC..."))
+        self.ui.actionAbout_Qt.setText(self.tr("About &Qt..."))
+
         QMetaObject.connectSlotsByName(self)
         self.ui.demosList.itemClicked.connect(self.showDemoInfo)
+        self.ui.demosList.itemSelectionChanged.connect(self.showDemoInfo)
+        self.ui.demosList.itemActivated.connect(self.showDemoInfo)
         self.ui.demosList.customContextMenuRequested.connect(self.demoContextMenu)
         self.ui.copyDemoToDesktop.clicked.connect(self.copydemos)
         self.ui.viewAllScreenshots.clicked.connect(self.allScreenshotsDialog)
         self.ui.action_Update_list.triggered.connect(self.fillDemosList)
         self.ui.action_About_urtdsc.triggered.connect(self.aboutWindow)
         self.ui.actionAbout_Qt.triggered.connect(self.aboutQt)
+        self.ui.action_Exit.triggered.connect(self.close)
 
     def fillDemosList(self, type):
         self.ui.demosList.clear()
@@ -56,9 +82,9 @@ class urtdscMain(QMainWindow):
                 self.ui.demosList.addItem(file_date)
                 nodemos = '0'
             if type == 1:
-                self.ui.statusbar.showMessage("Demo list loaded. Total: " + str(self.ui.demosList.count()) + " demos.")
+                self.ui.statusbar.showMessage(self.tr("Demo list loaded. Total: ") + str(self.ui.demosList.count()) + " demos.")
             else:
-                self.ui.statusbar.showMessage("Demo list reloaded. Total: " + str(self.ui.demosList.count()) + " demos.")
+                self.ui.statusbar.showMessage(self.tr("Demo list reloaded. Total: ") + str(self.ui.demosList.count()) + " demos.")
         except:
             self.nodemosfound()
             nodemos = '1'
@@ -87,9 +113,9 @@ class urtdscMain(QMainWindow):
             screenshot = QPixmap().fromImage(self.screenimg).scaled(self.ui.screen.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             maps = "No maps"
 
-        self.ui.label.setText("<b>Demoname:</b> " + demoname + "<br><b>Nickname:</b> " + nickname + "<br><b>Maps:</b> " + maps)
+        self.ui.label.setText("<b>" + self.tr("Demoname") + ":</b> " + demoname + "<br><b>" + self.tr("Nickname") + ":</b> " + nickname + "<br><b>" + self.tr("Maps") + ":</b> " + maps)
         self.ui.screen.setPixmap(screenshot)
-        self.ui.statusbar.showMessage("Demo " + demoname + " have " + str(len(self.screens)) + " screenshot(s).")
+        self.ui.statusbar.showMessage(self.tr("Demo ") + demoname + self.tr(" have ") + str(len(self.screens)) + self.tr(" screenshot(s)."))
 
     def copydemos(self):
         lib.copyfile(os.path.expanduser("~/" + config.URT_FOLDER + "/q3ut4/demos/") + lib.demoname(demotime))
@@ -109,23 +135,23 @@ class urtdscMain(QMainWindow):
         als.show()
 
     def nodemosfound(self):
-        QMessageBox.critical(self, "UrTDSC - FAIL!", "No demos found.")
+        QMessageBox.critical(self, "UrTDSC - FAIL!", self.tr("No demos found."))
 
     def nosshotsfound(self):
-        QMessageBox.critical(self, "UrTDSC - FAIL!", "No screenshots found.")
+        QMessageBox.critical(self, "UrTDSC - FAIL!", self.tr("No screenshots found."))
 
     def demoContextMenu(self, pos):
         demomenu = QMenu("Demos menu")
-        demomenu.addAction("Copy all stuff to desktop", self.copyallstuff)
+        demomenu.addAction(self.tr("Copy all stuff to desktop"), self.copyallstuff)
         demomenu.addSeparator()
-        demomenu.addAction("Remove demo and related stuff from disk", self.removeallstuff)
+        demomenu.addAction(self.tr("Remove demo and related stuff from disk"), self.removeallstuff)
         demomenu.exec_(self.ui.demosList.mapToGlobal(pos))
 
     def aboutWindow(self):
         aboutw = QDialog()
         aboutw.ui = AboutWindow.Ui_Dialog()
         aboutw.ui.setupUi(aboutw)
-        aboutw.ui.label_2.setText((QApplication.translate("Dialog",'<p><span style=" font-size:11pt; font-weight:600;">Version 0.3-dev-' + self.revision +'</span></p></body></html>', None, QApplication.UnicodeUTF8)))
+        aboutw.ui.label_2.setText('<p><span style=" font-size:11pt; font-weight:600;">Version 0.3-dev-' + self.revision +'</span></p></body></html>')
         aboutw.exec_()
 
     def aboutQt(self):
@@ -137,7 +163,7 @@ class urtdscMain(QMainWindow):
             screenimg = QPixmap().fromImage(self.screenimg).scaled(self.ui.screen.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.ui.screen.setPixmap(screenimg)
         except:
-            self.ui.screen.setText("<big><b>Select demo from the left list</b></big>")
+            self.ui.screen.setText("<big><b>" + self.tr("Select demo from the left list") + "</b></big>")
 
     def closeEvent(self, QCloseEvent):
         self.settings.setValue('state', self.saveState())
@@ -181,9 +207,9 @@ class allScreens(QDialog):
             self.ui.label.setPixmap(screenimg)
         except:
             if self.ui.screenshotsList.count() > 0:
-                self.ui.label.setText("<big><b>Select screenshot</b></big>")
+                self.ui.label.setText("<big><b>" + self.tr("Select screenshot") + "</b></big>")
             else:
-                self.ui.label.setText("<big><span style='color:red;font-weight:bold;'>You must select demo first!</span></big>")
+                self.ui.label.setText("<big><span style='color:red;font-weight:bold;'>" + self.tr("You must select demo first!") + "</span></big>")
 
     def copyToDesktop(self, event):
         for screen in self.scrlist:
