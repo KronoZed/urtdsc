@@ -1,6 +1,6 @@
 # UrTDSC
 
-**UrTDSC** stands for "Urban Terror Demo-Screenshot C0nc4t3c4t0r. This program concatenade dates of demos and screenshots maded by Urban Terror and let you to copy demos and screenshots directly to your desktop for uploading to any site.
+**UrTDSC** stands for "Urban Terror Demo-Screenshot C0nc4t3c4t0r. This program concatenate dates of demos and screenshots made by Urban Terror and let you to copy demos and screenshots directly to your desktop for uploading to any site.
 
 UrTDSC distributed under Terms and Conditions of GNU GPL v3 or any higher version you may want.
 
