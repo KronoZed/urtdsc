@@ -5,7 +5,7 @@ import os, sys
 #from PyQt4 import Qt
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-import MainWindow, AllScreensDialog, AboutWindow
+from gui import MainWindow, AllScreensDialog, AboutWindow
 import glob, time, config, lib, commands
 
 class urtdscMain(QMainWindow):
