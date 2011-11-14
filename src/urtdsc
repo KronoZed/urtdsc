@@ -1,4 +1,10 @@
 #!/bin/sh
 
 # Launch urtdsc using this file!
-python urtdsc.py
+
+pythonver = $(python -c "import platform; print  platform.python_version()[0:3]")
+
+if [ -d '/usr/lib64/' ]; then
+    python /usr/lib64/python${pythonver}/site-packages/urtdsc/urtdsc.py
+else
+    python /usr/lib/python${pythonver}/site-packages/urtdsc/urtdsc.py
