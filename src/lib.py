@@ -66,7 +66,7 @@ def demoscreens(demoname):
     for screen in screenpath:
         screendt = getrealdate(2, screen)
         demodt = getrealdate(1, demoname)
-        if screendt > demodt - 60 * 30 and screendt < demodt + 60 * 30:
+        if screendt > demodt - 60 * 40 and screendt < demodt + 60 * 20:
             scr = spath + screen
             scraddr.append(scr)
     return scraddr
