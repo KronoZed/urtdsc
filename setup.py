@@ -13,7 +13,7 @@ setup(name='urtdsc',
       requires=["pyqt"],
       package_dir={'urtdsc': 'src'},
       py_modules=['config', 'lib'],
-      data_files=[  ("gui/noscreenshot.png", ["urtdsc/noscreenshot.png"]),
+      data_files=[  ("share/urtdsc/noscreenshot.png", ["gui/noscreenshot.png"]),
                     ("urtdsc-ru_RU.qm", ["urtdsc/urtdsc-ru_RU.qm"]),
       ],
 )
