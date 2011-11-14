@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=UrTDSC
+Name[ru]=UrTDSC
+GenericName=Urban Terror Demo-Screenshot C0nc4t3n4t0r
+GenericName[ru]=Просмотр скриншотов, связанных с определенной демкой
+Comment=Concatenates Urban Terror demos and screenshots
+Comment[ru]=Просмотр скриншотов, связанных с определенной демкой
+Exec=/usr/bin/urtdsc
+Icon=urtdsc
+Terminal=false
+Type=Application
+Categories=Game;X-SuSE-Core-Game;

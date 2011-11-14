@@ -15,6 +15,7 @@ setup(name='urtdsc',
       py_modules=['config', 'lib', 'AboutWindow', 'AllScreensDialog', 'MainWindow'],
       data_files=[  ("share/urtdsc/", ["src/noscreenshot.png"]),
                     ("share/urtdsc/", ["src/translations/urtdsc-ru_RU.qm"]),
+                    ("share/applications/", ["src/urtdsc.desktop"]),
                     ("bin", ["src/urtdsc"]),
       ],
 )
