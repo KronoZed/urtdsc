@@ -16,7 +16,11 @@ class urtdscMain(QMainWindow):
 
         # Translations
         try:
-            dirr = '/usr/share/urtdsc/'
+            if os.path.exists(os.getcwd() + "/translations/"):
+                dirr = os.getcwd() + "/translations/"
+            else:
+                dirr = '/usr/share/urtdsc/'
+            
             translator = QTranslator(app)
             translator.load("urtdsc-" + QLocale.system().name() + ".qm", dirr)
             app.installTranslator(translator)
