@@ -16,8 +16,8 @@ Go to urtdsc directory and do:
 If you do not want to install UrTDSC into your system, just go to "src" directory and launch urtdsc.
 
 Dependencies:
-    * Python 2.6 - 2.7.2
-    * PyQt4
+ * Python 2.6 - 2.7.2
+ * PyQt4
 
 ## Bug reporting, suggesting, etc.
 All bugreports and suggestions must go to [my Redmine](http://dev.pztrn.ru/projects/urtdsc/).
