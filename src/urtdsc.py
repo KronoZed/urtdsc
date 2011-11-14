@@ -151,7 +151,7 @@ class urtdscMain(QMainWindow):
         aboutw = QDialog()
         aboutw.ui = AboutWindow.Ui_Dialog()
         aboutw.ui.setupUi(aboutw)
-        aboutw.ui.label_2.setText('<p><span style=" font-size:11pt; font-weight:600;">Version 0.3-beta'</span></p></body></html>')
+        aboutw.ui.label_2.setText('<p><span style=" font-size:11pt; font-weight:600;">Version 0.3-beta</span></p></body></html>')
         aboutw.exec_()
 
     def aboutQt(self):
