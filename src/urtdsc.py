@@ -5,7 +5,7 @@ import os, sys
 #from PyQt4 import Qt
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from gui import MainWindow, AllScreensDialog, AboutWindow
+import MainWindow, AllScreensDialog, AboutWindow
 import glob, time, config, lib, commands
 
 class urtdscMain(QMainWindow):
@@ -16,7 +16,7 @@ class urtdscMain(QMainWindow):
 
         # Translations
         try:
-            dirr = os.getcwd() + "/translations/"
+            dirr = '/usr/share/urtdsc/'
             translator = QTranslator(app)
             translator.load("urtdsc-" + QLocale.system().name() + ".qm", dirr)
             app.installTranslator(translator)
@@ -112,7 +112,7 @@ class urtdscMain(QMainWindow):
 
             maps = ", ".join(maplist).lower()
         except:
-            self.screenimg = QImage('gui/noscreenshot.png')
+            self.screenimg = QImage('/usr/share/urtdsc/noscreenshot.png')
             screenshot = QPixmap().fromImage(self.screenimg).scaled(self.ui.screen.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             maps = "No maps"
 
